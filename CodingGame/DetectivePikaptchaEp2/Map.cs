@@ -28,19 +28,21 @@ namespace CodingGame.DetectivePikaptchaEp2
 
         public void Play()
         {
-            this.Cells[this.Pikaptcha.X, this.Pikaptcha.Y]++;
             this.Play(this.Pikaptcha.X, this.Pikaptcha.Y);
         }
 
         private void Play(int x, int y)
         {
             (int X, int Y) result = this.Pikaptcha.Move(x, y, this.Cells, this.Width, this.Height);
-            if (result.X == this.Pikaptcha.X && result.Y == this.Pikaptcha.Y)
+            if (result.X == -1)
                 this.Show();
             else
             {
                 this.Cells[result.X, result.Y]++;
-                this.Play(result.X, result.Y);
+                if (result.X == this.Pikaptcha.X && result.Y == this.Pikaptcha.Y)
+                    this.Show();
+                else
+                    this.Play(result.X, result.Y);
             }
         }
 

@@ -50,10 +50,12 @@ namespace CodingGame.DetectivePikaptchaEp2
             do
             {
                 if (count > 0)
-                    face = face.Rotate();
+                    face = face.Rotate(this.WallOn);
                 next = face.Next(this.WallOn, x, y);
                 count++;
-            } while (count < 4 && (next.X < 0 || next.Y < 0 || next.X >= width || next.Y >= height || cells[next.X, next.Y] < 0));
+            } while (count <= 4 && (next.X < 0 || next.Y < 0 || next.X >= width || next.Y >= height || cells[next.X, next.Y] < 0));
+            if (count > 4)
+                return (-1, -1);
             this.Face = next.face;
             return (next.X, next.Y);
         }
@@ -87,19 +89,37 @@ namespace CodingGame.DetectivePikaptchaEp2
                         return (x + 1, y, Face.Right);
             }
         }
-        public static Face Rotate(this Face face)
+        public static Face Rotate(this Face face, WallOn wallOn)
         {
-            switch (face)
+            if (wallOn == WallOn.Left)
             {
-                case Face.Down:
-                    return Face.Left;
-                case Face.Left:
-                    return Face.Up;
-                case Face.Up:
-                    return Face.Right;
-                default:
-                case Face.Right:
-                    return Face.Down;
+                switch (face)
+                {
+                    case Face.Down:
+                        return Face.Left;
+                    case Face.Left:
+                        return Face.Up;
+                    case Face.Up:
+                        return Face.Right;
+                    default:
+                    case Face.Right:
+                        return Face.Down;
+                }
+            }
+            else
+            {
+                switch (face)
+                {
+                    case Face.Down:
+                        return Face.Right;
+                    case Face.Left:
+                        return Face.Down;
+                    case Face.Up:
+                        return Face.Left;
+                    default:
+                    case Face.Right:
+                        return Face.Up;
+                }
             }
         }
     }
