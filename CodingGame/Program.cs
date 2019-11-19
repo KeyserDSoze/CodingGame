@@ -7,31 +7,24 @@ namespace CodingGame
 {
     class Program
     {
-        static List<string> lines = new List<string>()
-        {
-            "#00###000",
-            "0000<0000",
-            "000##0000"
-        };
+        
         static void Main(string[] args)
         {
-            int width = 9;
-            int height = 3;
-            Map map = new Map(width, height);
-            int i = 0;
-            foreach (string line in lines)
-            {
-                for (int j = 0; j < line.Length; j++)
-                {
-                    if (line[j] == '#')
-                        map.Zero(j, i);
-                    else if (line[j] != '0')
-                        map.SetPikaptcha(j, i, line[j]);
-                }
-                i++;
-            }
-            map.SetWallOn("R");
-            map.Play();
+            (bool, int) returned = ShadowsOfTheKnightEp2.ShadowsMain.Start();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(string.Empty);
+            Console.WriteLine(string.Empty);
+            Console.WriteLine(string.Empty);
+            Console.WriteLine($"In {returned.Item2} steps");
+            Console.WriteLine(returned.Item1);
         }
+    }
+    static class Player 
+    {
+        internal static void Log(object o) => Console.WriteLine(o);
+    }
+    static class Solution 
+    {
+        internal static void Log(object o) => Player.Log(o);
     }
 }
