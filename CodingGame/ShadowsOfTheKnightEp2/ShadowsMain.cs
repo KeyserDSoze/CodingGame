@@ -6,11 +6,13 @@ namespace CodingGame.ShadowsOfTheKnightEp2
 {
     class ShadowsMain
     {
-        //static string[] Entries = new string[5] { "5", "16", "80", "1", "5" };
-        //static Position Solution = new Position(4, 10);
-        static int[] Entries = new int[5] { 18, 32, 45, 17, 31 };
-        static Position Solution = new Position(2, 1);
-        private const int MaxSteps = 45;
+        static int[] Entries = new int[5] { 5, 16, 80, 1, 5 };
+        static Position Solution = new Position(4, 10);
+        //static int[] Entries = new int[5] { 18, 32, 45, 17, 31 };
+        //static Position Solution = new Position(2, 1);
+        //static int[] Entries = new int[5] { 1, 100, 12, 0, 98 };
+        //static Position Solution = new Position(0, 1);
+        private const int MaxSteps = 12;
         internal static (bool, int) Start()
         {
             int W = Entries[0]; // width of the building.
@@ -19,18 +21,17 @@ namespace CodingGame.ShadowsOfTheKnightEp2
             int X0 = Entries[3];
             int Y0 = Entries[4];
             int max = MaxSteps;
-            Rectangle.Width = W;
-            Rectangle.Height = H;
-            Rectangle rectangle = new Rectangle();
-            Position position = new Position(X0, Y0);
-            Position previous = null;
+            Map map = new Map(W, H);
+            Position previous = map.StartPoint(X0, Y0);
+            Previous = previous;
+            Position current = map.FirstJump();
             while (true && max > 0)
             {
-                Position newPosition = position.Next(rectangle, previous);
+                Position newPosition = map.Next(previous, current);
                 if (newPosition.ToString() == Solution.ToString())
                     return (true, MaxSteps - max);
-                previous = position;
-                position = newPosition;
+                previous = current;
+                current = newPosition;
                 // Write an action using Console.WriteLine()
                 // To debug: Console.Error.WriteLine("Debug messages...");
                 max--;
