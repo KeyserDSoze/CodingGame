@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CodingGame.ShadowsOfTheKnightEp2
 {
-    internal class Position
+    internal struct Position
     {
         public int X { get; }
         public int Y { get; }

@@ -6,8 +6,10 @@ namespace CodingGame.ShadowsOfTheKnightEp2
 {
     class ShadowsMain
     {
-        static int[] Entries = new int[5] { 5, 16, 80, 1, 5 };
-        static Position Solution = new Position(4, 10);
+        static int[] Entries = new int[5] { 8000, 8000, 31, 3200, 2100 };
+        static Position Solution = new Position(0, 0);
+        //static int[] Entries = new int[5] { 5, 16, 80, 1, 5 };
+        //static Position Solution = new Position(4, 10);
         //static int[] Entries = new int[5] { 18, 32, 45, 17, 31 };
         //static Position Solution = new Position(2, 1);
         //static int[] Entries = new int[5] { 1, 100, 12, 0, 98 };
@@ -38,26 +40,18 @@ namespace CodingGame.ShadowsOfTheKnightEp2
             }
             return (false, MaxSteps - max);
         }
-        private static Position Previous = null;
+        private static Position Previous;
         internal static string IsNear(Position position)
         {
-            if (Previous == null)
-            {
-                Previous = position;
-                return "UNKNOWN";
-            }
+            int distance = position.Distance(Solution);
+            int previousDistances = Previous.Distance(Solution);
+            Previous = position;
+            if (distance < previousDistances)
+                return "WARMER";
+            else if (distance > previousDistances)
+                return "COLDER";
             else
-            {
-                int distance = position.Distance(Solution);
-                int previousDistances = Previous.Distance(Solution);
-                Previous = position;
-                if (distance < previousDistances)
-                    return "WARMER";
-                else if (distance > previousDistances)
-                    return "COLDER";
-                else
-                    return "SAME";
-            }
+                return "SAME";
         }
     }
 }

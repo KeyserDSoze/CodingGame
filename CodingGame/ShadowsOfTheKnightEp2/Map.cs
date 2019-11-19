@@ -43,20 +43,19 @@ namespace CodingGame.ShadowsOfTheKnightEp2
             Position averagePosition = new Position(x / this.Positions.Count, y / this.Positions.Count);
             if (!this.Positions.Any(ƒ => ƒ.X == averagePosition.X && ƒ.Y == averagePosition.Y))
                 averagePosition = this.Positions.OrderBy(ƒ => ƒ.Distance(averagePosition)).FirstOrDefault();
-            this.RemovePoint(averagePosition.X, averagePosition.Y);
+            this.RemovePoint(averagePosition);
             return averagePosition;
         }
         public Position NextPoint(int x, int y)
         {
-            Position position = this.Positions.FirstOrDefault(ƒ => ƒ.X == x && ƒ.Y == y);
+            Position position = new Position(x, y);
             this.RemovePoint(position);
             return position;
         }
         public Position Next(Position previous, Position current)
         {
             string status = ShadowsMain.IsNear(current);
-            if (previous != null)
-                Player.Log($"prev: {previous.X} {previous.Y}");
+            Player.Log($"prev: {previous.X} {previous.Y}");
             Player.Log($"{status} {current.X} {current.Y}");
             this.RemovePointIf(previous, current, status);
             Player.Log(string.Join(',', this.Positions));
@@ -64,7 +63,7 @@ namespace CodingGame.ShadowsOfTheKnightEp2
         }
 
         public void RemovePoint(int x, int y)
-            => this.RemovePoint(this.Positions.FirstOrDefault(ƒ => ƒ.X == x && ƒ.Y == y));
+            => this.RemovePoint(new Position(x, y));
         public void RemovePoint(Position position)
             => this.Positions.Remove(position);
         public void RemovePointIf(Position previous, Position current, string status)
