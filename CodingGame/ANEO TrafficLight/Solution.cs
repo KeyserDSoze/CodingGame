@@ -8,10 +8,10 @@ namespace CodinGame.ANEO_TrafficLight
     {
         static int[] Inputs = new int[2] { 50, 1 };
         static int[] Distances = new int[1] { 200 };
-        static int[] Durations = new int[1] { 15 };
+        static int[] Durations = new int[1] { 10 };
         public void Run()
         {
-            int maxSpeed = Inputs[0] * 3600 / 1000;
+            int maxSpeed = Inputs[0];
             int lightCount = Inputs[1];
             List<TrafficLight> trafficLights = new List<TrafficLight>();
             for (int i = 0; i < lightCount; i++)
@@ -23,20 +23,17 @@ namespace CodinGame.ANEO_TrafficLight
             }
             while (maxSpeed > 0)
             {
-                int seconds = 0;
+                bool check = true;
                 //Path
                 foreach (TrafficLight trafficLight in trafficLights)
                 {
-                    (bool IsRed, int Seconds) passage = trafficLight.IsRed(maxSpeed, seconds);
-                    if (passage.IsRed)
+                    if (trafficLight.IsRed(maxSpeed))
                     {
-                        seconds = 0;
+                        check = false;
                         break;
                     }
-                    else
-                        seconds = passage.Seconds;
                 }
-                if (seconds > 0)
+                if (check)
                     break;
                 maxSpeed--;
             }

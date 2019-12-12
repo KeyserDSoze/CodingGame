@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CodinGame.ANEO_TrafficLight
 {
-    internal class TrafficLight
+    class TrafficLight
     {
         public int Distance { get; }
         public int Duration { get; }
@@ -13,10 +13,7 @@ namespace CodinGame.ANEO_TrafficLight
             this.Distance = distance;
             this.Duration = duration;
         }
-        public (bool, int) IsRed(int speed, int seconds)
-        {
-            int time = seconds + this.Distance / speed;
-            return ((time / this.Duration) % 2 == 1, time);
-        }
+        public bool IsRed(int speed)
+            => (18 * this.Distance) % (10 * speed * this.Duration) >= (5 * speed * this.Duration);
     }
 }
