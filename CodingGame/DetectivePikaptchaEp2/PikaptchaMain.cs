@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodingGame.DetectivePikaptchaEp2
+namespace CodinGame.DetectivePikaptchaEp2
 {
     class PikaptchaMain
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodingGame.ShadowsOfTheKnightEp2
+namespace CodinGame.ShadowsOfTheKnightEp2
 {
     internal class Rectangle
     {

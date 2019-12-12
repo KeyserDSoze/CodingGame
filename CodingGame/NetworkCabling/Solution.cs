@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodingGame.NetworkCabling
+namespace CodinGame.NetworkCabling
 {
-    internal class Solution
+    internal class Solution : ICodinGame
     {
         private int N = 4;
         //private List<Point> Points = new List<Point>()
@@ -19,7 +19,7 @@ namespace CodingGame.NetworkCabling
             new Point(0,0),
             new Point(2,2),
         };
-        internal void Run()
+        public void Run()
         {
             this.N = this.Points.Count;
             Map map = new Map(this.N);

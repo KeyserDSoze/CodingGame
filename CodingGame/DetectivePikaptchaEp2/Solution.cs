@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodingGame.DetectivePikaptchaEp2
+namespace CodinGame.DetectivePikaptchaEp2
 {
-    internal class Solution
+    internal class Solution : ICodinGame
     {
         private static List<string> Lines = new List<string>()
         {
@@ -12,7 +12,7 @@ namespace CodingGame.DetectivePikaptchaEp2
             "0000<0000",
             "000##0000"
         };
-        internal void Run()
+        public void Run()
         {
             int width = 9;
             int height = 3;

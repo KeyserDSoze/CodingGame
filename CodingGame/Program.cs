@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CodingGame.DetectivePikaptchaEp2;
+using CodinGame.DetectivePikaptchaEp2;
 
-namespace CodingGame
+namespace CodinGame
 {
     class Program
     {
-        
+        private static readonly CodinGame CodinGame = new CodinGame("CodinGame");
         static void Main(string[] args)
         {
-            (bool, int) returned = ShadowsOfTheKnightEp2.ShadowsMain.Start();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(string.Empty);
-            Console.WriteLine(string.Empty);
-            Console.WriteLine(string.Empty);
-            Console.WriteLine($"In {returned.Item2} steps");
-            Console.WriteLine(returned.Item1);
+            CodinGame.Start();
         }
     }
     static class Player 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodingGame.NetworkCabling
+namespace CodinGame.NetworkCabling
 {
     internal class Point
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodingGame.ShadowsOfTheKnightEp2
+namespace CodinGame.ShadowsOfTheKnightEp2
 {
-    class ShadowsMain
+    class ShadowsMain : ICodinGame
     {
         static int[] Entries = new int[5] { 8000, 8000, 31, 3200, 2100 };
         static Position Solution = new Position(0, 0);
@@ -15,7 +15,7 @@ namespace CodingGame.ShadowsOfTheKnightEp2
         //static int[] Entries = new int[5] { 1, 100, 12, 0, 98 };
         //static Position Solution = new Position(0, 1);
         private const int MaxSteps = 12;
-        internal static (bool, int) Start()
+        public void Run()
         {
             int W = Entries[0]; // width of the building.
             int H = Entries[1]; // height of the building.
@@ -31,14 +31,14 @@ namespace CodingGame.ShadowsOfTheKnightEp2
             {
                 Position newPosition = map.Next(previous, current);
                 if (newPosition.ToString() == Solution.ToString())
-                    return (true, MaxSteps - max);
+                    Console.WriteLine((true, MaxSteps - max));
                 previous = current;
                 current = newPosition;
                 // Write an action using Console.WriteLine()
                 // To debug: Console.Error.WriteLine("Debug messages...");
                 max--;
             }
-            return (false, MaxSteps - max);
+            Console.WriteLine((false, MaxSteps - max));
         }
         private static Position Previous;
         internal static string IsNear(Position position)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodingGame.ShadowsOfTheKnightEp2
+namespace CodinGame.ShadowsOfTheKnightEp2
 {
     internal sealed class Map
     {
