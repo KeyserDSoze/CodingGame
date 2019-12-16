@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CodinGame.Dead_mens_shot
@@ -26,13 +27,21 @@ namespace CodinGame.Dead_mens_shot
                 int x = Points[i, 0];
                 int y = Points[i, 1];
                 figure.AddPoint(new Point(x, y));
+                Console.WriteLine(new Point(x, y).AngularCoefficient(figure.Points.First()));
             }
             figure.CalculateAveragePoint();
+            Console.WriteLine(figure.Average.AngularCoefficient(figure.Points.First()));
+            Console.WriteLine(figure.Average.AngularCoefficient(figure.Points.Skip(1).First()));
+            Console.WriteLine(figure.Average.AngularCoefficient(figure.Points.Last()));
             for (int i = 0; i < M; i++)
             {
                 int x = Shots[i, 0];
                 int y = Shots[i, 1];
                 Console.WriteLine(figure.IsHit(new Point(x, y)) ? "hit" : "miss");
+                Console.WriteLine(figure.Average.AngularCoefficient(new Point(x, y)));
+                Console.WriteLine(figure.Points.First().AngularCoefficient(new Point(x, y)));
+                Console.WriteLine(figure.Points.Skip(1).First().AngularCoefficient(new Point(x, y)));
+                Console.WriteLine(figure.Points.Last().AngularCoefficient(new Point(x, y)));
             }
         }
     }
