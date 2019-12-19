@@ -1012,39 +1012,28 @@ namespace CodinGame.Plague_Jr
         };
         public void Run()
         {
-            List<Human> humans = new List<Human>();
+            Dictionary<int, List<int>> fathers = new Dictionary<int, List<int>>();
+            Dictionary<int, List<int>> children = new Dictionary<int, List<int>>();
             for (int i = 0; i < N; i++)
             {
                 int A = Inputs[i].Item1;
                 int B = Inputs[i].Item2;
-                if (!humans.Any(x => x.Id == A))
-                    humans.Add(new Human(A, B));
-                else
-                    humans.First(x => x.Id == A).AddFurtherNext(B);
+                Humans.Instance(A).AddFurtherNext(B);
             }
-            Human first = humans.OrderByDescending(x => x.Next.Distinct().Count()).First();
-            IEnumerable<Human> infecteds = new List<Human>() { first };
-            humans.Remove(first);
-            int day = 1;
-            while (humans.Count > 0)
-            {
-                foreach (Human infected in infecteds)
-                {
-                    foreach (int id in infected.Next)
-                    {
-                        Human newInfected = humans.FirstOrDefault(x => x.Id == id);
-                        if (newInfected != null)
-                            newInfected.Infect();
-                    }
-                    foreach(Human human in humans.Where(x => x.Next.Contains(infected.Id)))
-                    {
-                        human.Infect();
-                    }
-                }
-                infecteds = humans.Where(x => x.Infected).ToList();
-                humans = humans.Where(x => !x.Infected).ToList();
-                day++;
-            }
+            int day = Humans.MaxConnections();
+            //List<Human> infecteds = new List<Human>() { Humans.First() };
+            //List<Human> newInfecteds = new List<Human>();
+
+            //int day = 1;
+            //while (Humans.Infected < N)
+            //{
+            //    foreach (Human infected in infecteds)
+            //        foreach (Human human in infected.Next)
+            //            newInfecteds.Add(human.Infect());
+            //    infecteds = newInfecteds;
+            //    newInfecteds = new List<Human>();
+            //    day++;
+            //}
             // Write an action using Console.WriteLine()
             // To debug: Console.Error.WriteLine("Debug messages...");
 
