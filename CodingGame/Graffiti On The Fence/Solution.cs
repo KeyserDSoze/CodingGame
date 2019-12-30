@@ -7,14 +7,12 @@ namespace CodinGame.Graffiti_On_The_Fence
 {
     internal class Solution : ICodinGame
     {
-        static int L = 12;
+        static int L = 7;
         static List<string> Inputs = new List<string>()
         {
-            "6 10",
-            "0 4",
-            "7 8",
-            "3 7",
-            "8 12"
+            "1 4",
+            "3 6",
+            "0 2",
         };
         static int N = Inputs.Count;
 
@@ -32,23 +30,41 @@ namespace CodinGame.Graffiti_On_The_Fence
                 else
                     ranges.Add(new Range(start, end));
             }
-            int min = 0;
-            bool never = true;
-            foreach (Range r in ranges.OrderBy(x => x.Start))
+            List<Range> deletedRanges = new List<Range>();
+            foreach (Range range in ranges.OrderBy(x => x.Start))
             {
-                if (r.Start > min)
+                if (!deletedRanges.Any(x => x == range))
                 {
-                    Console.WriteLine($"{min} {r.Start}");
-                    min = r.End;
-                    never = false;
+                    Range existingRange = ranges.FirstOrDefault(x => range != x && ((range.Start >= x.Start && range.Start < x.End) || (range.End <= x.End && range.End > x.Start)));
+                    if (existingRange != null)
+                    {
+                        range.AmplifyRange(existingRange.Start, existingRange.End);
+                        deletedRanges.Add(existingRange);
+                    }
                 }
-                else if (r.End > min)
-                    min = r.End;
             }
-            if (never)
+            foreach (Range deletedRange in deletedRanges)
+                ranges.Remove(deletedRange);
+            if (ranges.Sum(x => x.End - x.Start) == L)
+            {
                 Console.WriteLine($"All painted");
-            else if (min < L)
-                Console.WriteLine($"{min} {L}");
+            }
+            else
+            {
+                int min = 0;
+                foreach (Range r in ranges.OrderBy(x => x.Start))
+                {
+                    if (r.Start > min)
+                    {
+                        Console.WriteLine($"{min} {r.Start}");
+                        min = r.End;
+                    }
+                    else if (r.End > min)
+                        min = r.End;
+                }
+                if (min != L)
+                    Console.WriteLine($"{min} {L}");
+            }
         }
     }
 }
