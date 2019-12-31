@@ -14,6 +14,8 @@ namespace CodinGame.Rooks_Movements
         public int MaxX { get; private set; } = 9;
         public int MaxY { get; private set; } = 9;
         private Dictionary<string, bool> Enemies = new Dictionary<string, bool>();
+        private List<string> EatingPositions = new List<string>();
+
         public Rock(string position)
         {
             this.Start = position;
@@ -21,6 +23,7 @@ namespace CodinGame.Rooks_Movements
             this.Y = int.Parse(position[1].ToString());
             Console.Error.WriteLine($"{this.X} {this.Y}");
         }
+
         public void SetMaxAndMin(string position, bool isEnemy)
         {
             int x = (int)position[0] - 96;
@@ -38,33 +41,35 @@ namespace CodinGame.Rooks_Movements
         }
         public void Print()
         {
-            for (int i = this.MinX + 1; i <= this.X; i++)
+            for (int i = this.MinX; i <= this.X; i++)
             {
                 string position = $"{(char)(i + 96)}{this.Y}";
-                Check(position, i, this.X);
+                Check(position, i, this.X, this.MinX);
             }
-            for (int i = this.MinY + 1; i <= this.Y; i++)
+            for (int i = this.MinY; i <= this.Y; i++)
             {
                 string position = $"{(char)(this.X + 96)}{i}";
-                Check(position, i, this.Y);
+                Check(position, i, this.Y, this.MinY);
             }
-            for (int i = this.Y + 1; i <= this.MaxY; i++)
+            for (int i = this.Y; i <= this.MaxY; i++)
             {
                 string position = $"{(char)(this.X + 96)}{i}";
-                Check(position, i, this.MaxY);
+                Check(position, i, this.MaxY, this.Y);
             }
-            for (int i = this.X + 1; i <= this.MaxX; i++)
+            for (int i = this.X; i <= this.MaxX; i++)
             {
                 string position = $"{(char)(i + 96)}{this.Y}";
-                Check(position, i, this.MaxX);
+                Check(position, i, this.MaxX, this.X);
             }
-            void Check(string position, int i, int max)
-            {
-                if (this.Enemies.ContainsKey(position))
-                    Console.WriteLine($"R{this.Start}x{position}");
-                else if (i < max)
-                    Console.WriteLine($"R{this.Start}-{position}");
-            }
+            foreach (string eated in this.EatingPositions)
+                Console.WriteLine(eated);
+        }
+        private void Check(string position, int i, int max, int start)
+        {
+            if (this.Enemies.ContainsKey(position))
+                this.EatingPositions.Add($"R{this.Start}x{position}");
+            else if (i < max && i > start)
+                Console.WriteLine($"R{this.Start}-{position}");
         }
     }
 }
