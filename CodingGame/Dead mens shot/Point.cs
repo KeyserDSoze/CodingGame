@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CodinGame.Dead_mens_shot
 {
-    internal struct Point
+    internal class Point
     {
         public int X { get; }
         public int Y { get; }
