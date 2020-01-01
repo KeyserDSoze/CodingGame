@@ -18,6 +18,13 @@ namespace CodinGame.Dead_mens_shot
         static int[,] Points = new int[4, 2] { { -100, -100 }, { 100, -100 }, { 100, 100 }, { -100, 100 } };
         static int M = 5;
         static int[,] Shots = new int[5, 2] { { 0, 0 }, { 99, 99 }, { 101, 101 }, { 80, -101 }, { 0, -100 } };
+
+        //Six sides
+        //static int N = 6;
+        //static int[,] Points = new int[6, 2] { { 0, 0 }, { 100, -1000 }, { 500, 0 }, { 500, 100 }, { 400, 1000 }, { 0, 100 } };
+        //static int M = 5;
+        //static int[,] Shots = new int[5, 2] { { 300, 100 }, { 5, -666 }, { 100, -666 }, { 250, 250 }, { 400, -400 } };
+
         public void Run()
         {
             //http://www.dcs.gla.ac.uk/~pat/52233/slides/Geometry1x1.pdf

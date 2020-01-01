@@ -6,10 +6,10 @@ namespace CodinGame.Dead_mens_shot
 {
     internal class Point
     {
-        public int X { get; }
-        public int Y { get; }
+        public float X { get; }
+        public float Y { get; }
         public double AngularCoefficientOnStartPoint { get; private set; }
-        public Point(int x, int y)
+        public Point(float x, float y)
         {
             this.X = x;
             this.Y = y;
@@ -19,11 +19,17 @@ namespace CodinGame.Dead_mens_shot
             => (int)Math.Sqrt(Math.Pow(p.X - this.X, 2) + Math.Pow(p.Y - this.Y, 2));
         public double AngularCoefficient(Point point)
         {
-            int up = point.Y - this.Y;
-            int down = point.X - this.X;
-            if (up == 0 || down == 0)
-                return 0;
+            float up = point.Y - this.Y;
+            float down = point.X - this.X;
+            if (up == 0)
+                return this.AngularCoefficientOnStartPoint = 0;
+            if (down == 0)
+                return this.AngularCoefficientOnStartPoint = 90;
             return this.AngularCoefficientOnStartPoint = (double)up / (double)down;
+        }
+        public override string ToString()
+        {
+            return $"{this.X} {this.Y} {this.AngularCoefficientOnStartPoint}";
         }
     }
 }

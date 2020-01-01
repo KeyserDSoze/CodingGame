@@ -24,12 +24,14 @@ namespace CodinGame.Dead_mens_shot
             List<Point> points = new List<Point>();
             foreach (Point p in this.Points)
                 points.Add(p);
-            Point first = points.OrderBy(x => x.Y + x.X).First();
+            Point first = points.OrderBy(x => x.X).ThenBy(x => x.Y).First();
             Point aPoint = first;
             points.Remove(first);
-            while (this.Equations.Count < this.Points.Count - 1)
+            foreach(Point bPoint in points.OrderBy(x => x.AngularCoefficient(first)))
+            //while (this.Equations.Count < this.Points.Count - 1)
             {
-                Point bPoint = points.OrderBy(x => x.DistanceFrom(aPoint)).First();
+                Console.Error.WriteLine(bPoint);
+                //Point bPoint = points.OrderBy(x => x.DistanceFrom(aPoint)).First();
                 this.Equations.Add(new Equation(aPoint, bPoint, average));
                 aPoint = bPoint;
                 points.Remove(bPoint);
@@ -38,14 +40,9 @@ namespace CodinGame.Dead_mens_shot
         }
         public bool IsHit(Point p)
         {
-            foreach(Equation equation in this.Equations)
-            {
-                float y = equation.SolveWithX(p);
-                if (equation.Direction == Direction.Up && y > p.Y)
+            foreach (Equation equation in this.Equations)
+                if (!equation.IsInside(p))
                     return false;
-                if (equation.Direction == Direction.Down && y < p.Y)
-                    return false;
-            }
             return true;
         }
     }
