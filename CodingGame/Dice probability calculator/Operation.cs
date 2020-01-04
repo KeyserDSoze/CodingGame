@@ -63,69 +63,34 @@ namespace CodinGame.Dice_probability_calculator
                 decimal rightValue = decimal.Parse(right.Replace("d", ""));
                 decimal leftValue = decimal.Parse(left.Replace("d", ""));
                 if (operation == '*')
-                {
                     for (decimal j = 1; j <= leftValue * rightValue; j++)
-                    {
-                        if (!results.Contains(j))
-                            results.Add(j);
-                    }
-                }
+                        results.Add(j);
                 else
-                {
                     for (decimal i = 1; i <= leftValue; i++)
-                    {
                         for (decimal j = 1; j <= rightValue; j++)
-                        {
-                            decimal result = GetResult(i, j, operation);
-                            if (!results.Contains(result))
-                                results.Add(result);
-                        }
-                    }
-                }
+                            results.Add(GetResult(i, j, operation));
             }
             else if (left.Contains("d"))
             {
                 decimal rightValue = decimal.Parse(right);
                 decimal leftValue = decimal.Parse(left.Replace("d", ""));
                 if (operation == '*')
-                {
                     for (decimal i = rightValue; i <= leftValue * rightValue; i++)
-                    {
-                        if (!results.Contains(i))
-                            results.Add(i);
-                    }
-                }
+                        results.Add(i);
                 else
-                {
                     for (decimal i = 1; i <= leftValue; i++)
-                    {
-                        decimal result = GetResult(leftValue, i, operation);
-                        if (!results.Contains(result))
-                            results.Add(result);
-                    }
-                }
+                        results.Add(GetResult(rightValue, i, operation));
             }
             else if (right.Contains("d"))
             {
                 decimal rightValue = decimal.Parse(right.Replace("d", ""));
                 decimal leftValue = decimal.Parse(left);
                 if (operation == '*')
-                {
                     for (decimal i = leftValue; i <= leftValue * rightValue; i++)
-                    {
-                        if (!results.Contains(i))
-                            results.Add(i);
-                    }
-                }
+                        results.Add(i);
                 else
-                {
                     for (decimal i = 1; i <= rightValue; i++)
-                    {
-                        decimal result = GetResult(leftValue, i, operation);
-                        if (!results.Contains(result))
-                            results.Add(result);
-                    }
-                }
+                        results.Add(GetResult(leftValue, i, operation));
             }
             else
                 results.Add(GetResult(decimal.Parse(left), decimal.Parse(right), operation));

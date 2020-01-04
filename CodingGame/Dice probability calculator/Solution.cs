@@ -8,6 +8,9 @@ namespace CodinGame.Dice_probability_calculator
     internal class Solution : ICodinGame
     {
         static string expr = "2*d6*d3-(3+d3)*d5>0";
+        //static string expr = "1+d4+1";
+        //static string expr = "d6+d6";
+
         public void Run()
         {
             List<string> entryPoint = new List<string>() { expr };
