@@ -18,7 +18,7 @@ namespace CodinGame.Dice_probability_calculator
             Operations.Add(new Parenthesis());
             Operations.Add(new MultiplyDivider());
             Operations.Add(new AddSubtracter());
-            Operations.Add(new Major());
+            Operations.Add(new GreaterThan());
         }
         private static readonly Regex dice = new Regex("d[0-9]{1-2}");
         public List<string> Calculate(List<string> context)
