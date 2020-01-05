@@ -4,13 +4,8 @@ using System.Text;
 
 namespace CodinGame.Micro_Assembly
 {
-    internal class SubCommand : IInterpreter
+    internal class SubCommand : OperationCommand
     {
-        public string Input { get; }
-        public SubCommand(string input) => this.Input = input;
-        public void Solve(Dictionary<string, int> values)
-        {
-
-        }
+        public SubCommand(string input) : base(input, '-') { }
     }
 }

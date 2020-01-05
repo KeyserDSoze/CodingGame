@@ -6,11 +6,11 @@ namespace CodinGame.Micro_Assembly
 {
     internal class Solution : ICodinGame
     {
-        static string Numbers = "1 2 3 -4";
+        static string Numbers = "3 5 7 9";
         static List<string> Commands = new List<string>()
         {
-            "MOV b 3",
-            "MOV c a"
+            "SUB b b 1",
+            "JNE 0 b 0",
         };
         public void Run()
         {
@@ -25,14 +25,20 @@ namespace CodinGame.Micro_Assembly
             values.Add("c", c);
             values.Add("d", d);
             int n = Commands.Count;
+            List<string> commands = new List<string>();
             for (int i = 0; i < n; i++)
             {
                 string instruction = Commands[i];
                 Console.Error.WriteLine(instruction);
-                IInterpreter interpreter = InterpreterFactory.Interprete(instruction);
-                interpreter.Solve(values);
+                commands.Add(instruction);
             }
-
+            for (int i = 0; i < n; i++)
+            {
+                IInterpreter interpreter = InterpreterFactory.Interprete(commands[i]);
+                int jump = interpreter.Solve(values);
+                if (jump >= 0)
+                    i = jump - 1;
+            }
             string response = "";
             foreach (var x in values)
                 response += x.Value.ToString() + " ";

@@ -6,6 +6,6 @@ namespace CodinGame.Micro_Assembly
 {
     internal interface IInterpreter
     {
-        void Solve(Dictionary<string, int> values);
+        int Solve(Dictionary<string, int> values);
     }
 }
