@@ -21,7 +21,7 @@ namespace CodinGame.Dice_probability_calculator
             Operations.Add(new GreaterThan());
         }
         private static readonly Regex dice = new Regex("d[0-9]{1-2}");
-        public List<string> Calculate(List<string> context)
+        public Dictionary<string, int> Calculate(Dictionary<string, int> context)
         {
             foreach (IOperation operation in Operations)
                 context = operation.Calculate(context);

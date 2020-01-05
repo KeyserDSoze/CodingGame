@@ -9,16 +9,18 @@ namespace CodinGame.Dice_probability_calculator
     {
         //static string expr = "12-d2*d6";
         //static string expr = "d9-2*d4";
-        static string expr = "2*d6*d3-(3+d3)*d5>0";
+        //static string expr = "2*d6*d3-(3+d3)*d5>0";
+        //static string expr = "2*d3-4*d5>0";
         //static string expr = "d9-2*d4";
+        static string expr = "8>d6+d6";
 
         public void Run()
         {
-            List<string> entryPoint = new List<string>() { expr };
-            List<string> exitPoint = Executor.Instance.Calculate(entryPoint);
-            foreach (var result in exitPoint.OrderBy(x => int.Parse(x)).GroupBy(x => x).Select(x => new { Value = x.Key, Count = (float)x.Count() }))
+            Dictionary<string, int> exitPoint = Executor.Instance.Calculate(new Dictionary<string, int>() { { expr, 1 } });
+            int total = exitPoint.Sum(x => x.Value);
+            foreach (var result in exitPoint.OrderBy(x => int.Parse(x.Key)))
             {
-                Console.WriteLine($"{result.Value} {(result.Count * 100 / (float)exitPoint.Count).ToString("N2")} {result.Count}");
+                Console.WriteLine($"{result.Key} {((float)result.Value * 100 / (float)total).ToString("N2")} {result.Value}");
             }
         }
     }

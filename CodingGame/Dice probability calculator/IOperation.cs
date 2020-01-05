@@ -6,6 +6,6 @@ namespace CodinGame.Dice_probability_calculator
 {
     internal interface IOperation
     {
-        List<string> Calculate(List<string> expression);
+        Dictionary<string, int> Calculate(Dictionary<string, int> expression);
     }
 }
