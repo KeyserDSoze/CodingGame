@@ -53,7 +53,6 @@ namespace CodinGame
             {
                 try
                 {
-                    Console.WriteLine("Insert your value");
                     Console.WriteLine($"Result: {this.DoWork(int.Parse(Result))}");
                     Console.WriteLine(string.Empty);
                     Console.Write("Press any button to continue");
