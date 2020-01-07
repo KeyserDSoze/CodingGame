@@ -1067,9 +1067,6 @@ namespace CodinGame.Medium.Locked_in_gear
                 if (gear.IsClockwise == null)
                 {
                     isCorrect |= gear.SetClockWise(null);
-                    Console.Error.WriteLine("-------------------------");
-                    foreach (Gear gear2 in gears.OrderBy(x => x.X + x.Y))
-                        Console.Error.WriteLine(gear2);
                 }
             }
             if (!isCorrect)
@@ -1083,7 +1080,40 @@ namespace CodinGame.Medium.Locked_in_gear
                     Console.WriteLine("CW");
                 else
                     Console.WriteLine("CCW");
+
+                Console.Error.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                Console.Error.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                Console.Error.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                Console.Error.WriteLine("");
+                int maxRadius = gears.Max(x => x.Radius);
+                int maxX = gears.Max(x => x.X) + maxRadius * 2 + 1;
+                int maxY = gears.Max(x => x.Y) + maxRadius * 2 + 1;
+                char[,] map = new char[maxY, maxX];
+                for (int i = 0; i < maxX; i++)
+                    for (int j = 0; j < maxY; j++)
+                        map[j, i] = ' ';
+                foreach (Gear gear2 in gears.OrderBy(x => x.Position))
+                {
+                    map[gear2.Y + gear2.Radius + maxRadius, gear2.X + maxRadius] = '-';
+                    map[gear2.Y - gear2.Radius + maxRadius, gear2.X + maxRadius] = '-';
+                    map[gear2.Y + maxRadius, gear2.X + gear2.Radius + maxRadius] = '|';
+                    map[gear2.Y + maxRadius, gear2.X - gear2.Radius + maxRadius] = '|';
+                    map[gear2.Y + maxRadius, gear2.X + maxRadius] = gear2.IsClockwise.Value ? 'C' : 'W';
+                    map[gear2.Y - gear2.Radius + maxRadius, gear2.X + gear2.Radius + maxRadius] = '|';
+                    map[gear2.Y + gear2.Radius + maxRadius, gear2.X + gear2.Radius + maxRadius] = '|';
+                    map[gear2.Y + gear2.Radius + maxRadius, gear2.X - gear2.Radius + maxRadius] = '|';
+                    map[gear2.Y - gear2.Radius + maxRadius, gear2.X - gear2.Radius + maxRadius] = '|';
+                }
+                for (int j = 0; j < maxY; j++)
+                {
+                    string ds = "";
+                    for (int i = 0; i < maxX; i++)
+                        ds += map[j, i];
+                    Console.WriteLine(ds);
+                }
             }
+            //foreach (Gear gear2 in gears.OrderBy(x => x.Position))
+            //    Console.Error.WriteLine(gear2);
         }
     }
 }
