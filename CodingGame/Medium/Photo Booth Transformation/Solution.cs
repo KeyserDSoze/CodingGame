@@ -26,13 +26,19 @@ namespace CodinGame.Medium.Photo_Booth_Transformation
                         array[j, k] = j * k;
                     }
                 }
-
             }
         }
         private static int[,] Transform(int[,] map, int w, int h)
         {
             int[,] array = new int[h, w];
-            
+            for (int j = 0; j < h; j++)
+            {
+                if (j % 2 == 0) { }
+                for (int k = 0; k < w; k++)
+                {
+                    if (k % 2 == 0) { }
+                }
+            }
             return array;
         }
     }
