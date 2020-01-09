@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodinGame.Medium.Robbery_optimisation
 {
@@ -8,7 +10,9 @@ namespace CodinGame.Medium.Robbery_optimisation
     {
         private static List<long> Inputs = new List<long>()
         {
-           2,5,2,10,8,4,5,2
+           //2,5,10,2,4,8,5,2,6,7,7,6,11,12,5,9,6,10,7,9,17,63,121,12,85,95,60,100,70,91,73,26,41,28,58,19,26,17,7,9,11,23,21,42,68,65,86,101,106,1
+           1,15,10,13,16
+
         };
         public void Run()
         {
@@ -19,34 +23,21 @@ namespace CodinGame.Medium.Robbery_optimisation
                 long housevalue = Inputs[i];
                 houses.Add(housevalue);
             }
-            int count = 0;
-            long money = 0;
-            while (count < N)
+            
+            Console.WriteLine(GetMoney(houses));
+        }
+        public static long GetMoney(List<long> houses) 
+        {
+            long currentMax = 0;
+            long previousMax = 0;
+            for (int i = 0; i < houses.Count; i++)
             {
-                //long maxA = 0;
-                //long maxB = 0;
-                //long maxC = 0;
-                //if (count + 3 < N)
-                //{
-                //    maxA = houses[count] + houses[count + 2];
-                //    maxB = houses[count] + houses[count + 3];
-                //}
-                int maxCount = count + 3;
-                long max = 0;
-                for (int i = count; i < N && i < maxCount; i++)
-                {
-                    if (houses[i] > max)
-                    {
-                        max = houses[i];
-                        count = i + 2;
-                    }
-                }
-                if (max == 0)
-                    count += 3;
-                else
-                    money += max;
+                long currentHouse = houses[i];
+                long newMax = Math.Max(currentMax, previousMax + currentHouse);
+                previousMax = currentMax;
+                currentMax = newMax;
             }
-            Console.WriteLine(money);
+            return currentMax;
         }
     }
 }
