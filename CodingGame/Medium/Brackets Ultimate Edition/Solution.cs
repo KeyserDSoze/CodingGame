@@ -25,11 +25,11 @@ namespace CodinGame.Medium.Brackets_Ultimate_Edition
             "<{[(abc(]}>",
             "<{[(abc>}])"
         };
-        private static int GetOccurencies(string value, char x) 
+        private static int GetOccurencies(string start, string end)
         {
             int count = 0;
-            foreach (char c in value)
-                if (x == c)
+            for (int i = 0; i < start.Length; i++)
+                if (start[i] != end[i])
                     count++;
             return count;
         }
@@ -40,8 +40,9 @@ namespace CodinGame.Medium.Brackets_Ultimate_Edition
             {
                 string initial = Inputs[j];
                 initial = Regex.Replace(initial, string.Empty);
-                int countB1 = Math.Abs()
+                string value = initial;
                 initial = initial.Replace(B1c, B1o).Replace(B2c, B2o).Replace(B3c, B3o).Replace(B4c, B4o);
+                int occurrency = GetOccurencies(initial, value);
                 Console.Error.WriteLine(initial);
                 while (initial != string.Empty)
                 {
@@ -53,7 +54,9 @@ namespace CodinGame.Medium.Brackets_Ultimate_Edition
                 if (initial.Length > 0)
                     Console.WriteLine("-1");
                 else
-                    Console.WriteLine("true");
+                {
+
+                }
             }
         }
     }
