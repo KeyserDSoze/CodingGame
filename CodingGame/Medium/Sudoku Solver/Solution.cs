@@ -27,7 +27,8 @@ namespace CodinGame.Sudoku_Solver
                 sudoku.AddLine(line, i);
             }
             sudoku.SetPossibleValues();
-            sudoku.Solve();
+            List<Cell> solutions = sudoku.Solve();
+            sudoku.Draw();
         }
     }
 }

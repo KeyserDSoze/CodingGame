@@ -17,55 +17,93 @@ namespace CodinGame.Sudoku_Solver
         {
             for (int i = 0; i < 9; i++)
                 for (int j = 0; j < 9; j++)
-                    if (this.Map[i, j].Value == 0)
-                        this.SetPossibleValues(i, j);
+                    if (!this.Map[i, j].HasValue)
+                        this.RemovePossibleValues(this.Map[i, j]);
         }
-        private void SetPossibleValues(int indexI, int indexJ)
+        private void RemovePossibleValues(Cell cell)
         {
-            List<int> values = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            cell.PossibleValues = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             for (int i = 0; i < 9; i++)
             {
-                values.Remove(this.Map[i, indexJ].Value);
-                values.Remove(this.Map[indexI, i].Value);
+                if (this.Map[i, cell.J].HasValue)
+                    cell.PossibleValues.Remove(this.Map[i, cell.J].Value);
+                if (this.Map[cell.I, i].HasValue)
+                    cell.PossibleValues.Remove(this.Map[cell.I, i].Value);
             }
-            this.Map[indexI, indexJ].PossibleValues = values;
-        }
-        private void RemovePossibleValues(int value, int indexI, int indexJ)
-        {
             for (int i = 0; i < 9; i++)
-            {
-                if (this.Map[i, indexJ].Value == 0)
-                    this.Map[i, indexJ].PossibleValues.Remove(value);
-                if (this.Map[indexI, i].Value == 0)
-                    this.Map[indexI, i].PossibleValues.Remove(value);
-            }
+                for (int j = 0; j < 9; j++)
+                    if (this.Map[i, j].Q == cell.Q && this.Map[i, j].HasValue)
+                        cell.PossibleValues.Remove(this.Map[i, j].Value);
         }
-        public void Solve()
+        private List<Cell> Solutions;
+        public List<Cell> Solve()
         {
             List<Cell> theZeroCell = new List<Cell>();
             for (int i = 0; i < 9; i++)
                 for (int j = 0; j < 9; j++)
                     if (this.Map[i, j].Value == 0)
                         theZeroCell.Add(this.Map[i, j]);
-            foreach (Cell cell in theZeroCell.OrderBy(x => x.PossibleValues.Count))
+            return this.Solutions = this.NextStep(0, 0, 0, theZeroCell, new List<Cell>[9, 9, 10]);
+        }
+        public void Draw()
+        {
+            for (int i = 0; i < 9; i++)
             {
-                Console.Error.WriteLine(cell);
-            }
-            int count = theZeroCell.Count;
-            for (int i = 0; i < count; i++)
-            {
-                Cell cell = theZeroCell.OrderBy(x => x.PossibleValues.Count).First();
-                if (cell.PossibleValues.Count > 0)
+                for (int j = 0; j < 9; j++)
                 {
-                    cell.Value = cell.PossibleValues.First();
-                    RemovePossibleValues(cell.Value, cell.I, cell.J);
+                    if (this.Map[i, j].Value == 0)
+                        this.Map[i, j] = this.Solutions.First(x => x.I == i && x.J == j);
+                    Console.Write(this.Map[i, j].Value);
+                }
+                Console.WriteLine(string.Empty);
+            }
+        }
+        public List<Cell> NextStep(int i, int j, int value, List<Cell> theZeroCell, List<Cell>[,,] memoization)
+        {
+            if (theZeroCell == null)
+                return null;
+            if (theZeroCell.Count == 0)
+                return new List<Cell>() { new Cell(value, i, j) };
+            if (memoization[i, j, value] != null)
+                return memoization[i, j, value];
+            Cell first = theZeroCell.OrderBy(x => x.PossibleValues.Count).FirstOrDefault();
+            if (first == null)
+                return null;
+            List<Cell> solutions = null;
+            foreach (int possibleValue in first.PossibleValues)
+            {
+                List<Cell> attempt = this.NextStep(first.I, first.J, possibleValue, theZeroCell.SetNewPossibilities(first, possibleValue), memoization);
+                if (attempt != null)
+                {
+                    solutions = attempt;
+                    if (value > 0)
+                        solutions.Add(new Cell(value, i, j));
+                    break;
+                }
+            }
+            return memoization[i, j, value] = solutions;
+        }
+    }
+    internal static class CellListExtensions
+    {
+        public static List<Cell> SetNewPossibilities(this List<Cell> cells, Cell first, int value)
+        {
+            List<Cell> newCells = new List<Cell>();
+            foreach (Cell cell in cells)
+            {
+                if (cell.I == first.I && cell.J == first.J)
+                    continue;
+                else if (cell.I == first.I || cell.J == first.J || cell.Q == first.Q)
+                {
+                    Cell newCell = cell.Copy();
+                    if (cell.PossibleValues.Contains(value))
+                        newCell.PossibleValues.Remove(value);
+                    newCells.Add(newCell);
                 }
                 else
-                {
-                    throw new NotImplementedException();
-                }
-                theZeroCell.Remove(cell);
+                    newCells.Add(cell.Copy());
             }
+            return newCells;
         }
     }
     internal class Cell
@@ -73,6 +111,8 @@ namespace CodinGame.Sudoku_Solver
         public int Value { get; set; }
         public int I { get; }
         public int J { get; }
+        public int Q => 3 * (this.I / 3) + this.J / 3 + 1;
+        public bool HasValue => this.Value > 0;
         public List<int> PossibleValues { get; set; }
 
         public Cell(int value, int i, int j)
@@ -81,9 +121,15 @@ namespace CodinGame.Sudoku_Solver
             this.I = i;
             this.J = j;
         }
-        public override string ToString()
+        public Cell(int value, int i, int j, List<int> possibleValues) : this(value, i, j)
         {
-            return $"{I} {J} => {Value} ({this.PossibleValues.Count})";
+            this.PossibleValues = new List<int>();
+            foreach (int possibleValue in possibleValues)
+                PossibleValues.Add(possibleValue);
         }
+        public override string ToString()
+            => $"{I} {J} {Q} => {Value} ({this.PossibleValues?.Count})";
+        public Cell Copy()
+            => new Cell(this.Value, this.I, this.J, this.PossibleValues);
     }
 }
