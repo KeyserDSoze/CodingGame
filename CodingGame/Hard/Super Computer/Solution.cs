@@ -34,23 +34,26 @@ namespace CodinGame.Hard.Super_Computer
                 else
                     daysAsDictionary.Add(J, d);
             }
-
             List<Day> days = daysAsDictionary.Select(x => x.Value).OrderBy(x => x.Distance).ToList();
-            int count = 1;
-            Day next = days.First();
-            int[] all = new int[int.MaxValue];
-            foreach (Day day in days.Skip(1))
+            int count = 0;
+            int[] all = new int[int.MaxValue/2];
+            foreach (Day day in days)
             {
-                if (day.From > next.To)
+                bool isAdmitted = true;
+                for (int i = day.From; i <= day.To; i++)
                 {
-                    next = day;
-                    count++;
+                    if (all[i] == 1)
+                    {
+                        isAdmitted = false;
+                        break;
+                    }
                 }
-            }
-            while (days.Count > 0)
-            {
-                Day.Next(days);
-                count++;
+                if (isAdmitted)
+                {
+                    count++;
+                    for (int i = day.From; i <= day.To; i++)
+                        all[i] = 1;
+                }
             }
             Console.WriteLine(count);
         }
