@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CodinGame.VeryHard.Music_Scores
@@ -18,10 +19,12 @@ namespace CodinGame.VeryHard.Music_Scores
             int height = int.Parse(inputs[1]);
             string baseImage = Inputs[1];
             Image image = new Image(width, height, baseImage);
+            image.PrintOneQuarter();
             Console.WriteLine(string.Join(",", image.GetIntervals()));
             Console.WriteLine(string.Join(",", image.GetNotePositions()));
+            Console.WriteLine($"number of notes: {image.GetNotePositions().Count()}");
             Console.WriteLine(string.Join(",", image.Translate()));
-            //image.Print();
+            //image.Save();
         }
     }
 }

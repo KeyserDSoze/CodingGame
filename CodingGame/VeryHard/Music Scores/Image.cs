@@ -96,13 +96,13 @@ namespace CodinGame.VeryHard.Music_Scores
         public int Middle => Intervals.Skip(1).First().End - Intervals.Skip(1).First().Start;
         public IEnumerable<Position> GetNotePositions()
         {
-            int max = Middle * 2;
+            int max = 2 * Middle;
             int lastFound = 0;
             for (int i = 0; i < Width; i++)
             {
-                if (GetColumn(i).Any(x => x == 0))
+                var column = GetColumn(i).ToList();
+                if (column.Any(x => x == 0))
                 {
-                    var column = GetColumn(i).ToList();
                     int count = 0;
                     bool top = false;
                     for (int j = 0; j < column.Count; j++)
@@ -115,9 +115,9 @@ namespace CodinGame.VeryHard.Music_Scores
                         }
                         if (count > 0 && column[j] == 1)
                         {
-                            if (count > max && lastFound + Wide < j)
+                            if (count >= max && lastFound + Wide < i)
                             {
-                                lastFound = j;
+                                lastFound = i;
                                 yield return new Position(top ? j - count : j, i, top);
                             }
                             count = 0;
@@ -126,7 +126,7 @@ namespace CodinGame.VeryHard.Music_Scores
                 }
             }
         }
-        static List<string> Notes = new List<string> { "A", "G", "F", "E", "D", "C", "B", "A", "G", "F", "E", "D", "C" };
+        static List<string> Notes = new List<string> { "A", "G", "F", "E", "D", "C", "B", "A", "G", "F", "E", "D", "C", "B", "A", "G", "F", "E", "D", "C" };
         public string GetNote(Position note)
         {
             for (int i = 0; i < Intervals.Count; i++)
@@ -158,38 +158,12 @@ namespace CodinGame.VeryHard.Music_Scores
             foreach (Position position in this.GetNotePositions())
             {
                 string note = GetNote(position);
-                List<int> row = GetRow(position.X).ToList();
                 bool isOpen = false;
-                bool firstAttempt = true;
-                for (int i = position.X - 1; i >= 0; i--)
+                try
                 {
-                    if (row[i] == 0 && firstAttempt)
-                    {
-
-                    }
-                    else
-                    {
-                        firstAttempt = false;
-                        if (row[i] == 0)
-                        {
-                            int distance = position.X - 1 - i;
-                            for (int k = i - 1; k >= 0; k--)
-                            {
-                                if (row[k] == 0)
-                                    distance++;
-                                else
-                                    break;
-                            }
-                            if (distance == middle)
-                                isOpen = false;
-                            break;
-                        }
-                    }
-                }
-                if (!isOpen)
-                {
-                    firstAttempt = true;
-                    for (int i = position.X + 1; i < Width; i++)
+                    List<int> row = GetRow(position.X).ToList();
+                    bool firstAttempt = true;
+                    for (int i = position.X - 1; i >= 0; i--)
                     {
                         if (row[i] == 0 && firstAttempt)
                         {
@@ -200,30 +174,63 @@ namespace CodinGame.VeryHard.Music_Scores
                             firstAttempt = false;
                             if (row[i] == 0)
                             {
-                                int distance = i - position.X;
-                                for (int k = i + 1; k < Width; k++)
+                                int distance = position.X - 1 - i;
+                                for (int k = i - 1; k >= 0; k--)
                                 {
                                     if (row[k] == 0)
                                         distance++;
                                     else
                                         break;
                                 }
-                                if (position.Top)
-                                {
-                                    if (Map[position.X - distance / 2 + 1, position.Y + distance / 2] == 0)
-                                        isOpen = true;
-                                    Map[position.X - distance / 2 + 1, position.Y + distance / 2] = 4;
-                                }
-                                else
-                                {
-                                    if (Map[position.X + distance / 2 - 1, position.Y + distance / 2] == 0)
-                                        isOpen = true;
-                                    Map[position.X - distance / 2 - 1, position.Y + distance / 2] = 4;
-                                }
+                                if (distance == middle)
+                                    isOpen = false;
                                 break;
                             }
                         }
                     }
+                    if (!isOpen)
+                    {
+                        firstAttempt = true;
+                        for (int i = position.X + 1; i < Width; i++)
+                        {
+                            if (row[i] == 0 && firstAttempt)
+                            {
+
+                            }
+                            else
+                            {
+                                firstAttempt = false;
+                                if (row[i] == 0)
+                                {
+                                    int distance = i - position.X;
+                                    for (int k = i + 1; k < Width; k++)
+                                    {
+                                        if (row[k] == 0)
+                                            distance++;
+                                        else
+                                            break;
+                                    }
+                                    if (position.Top)
+                                    {
+                                        if (Map[position.X - distance / 2 + 1, position.Y + distance / 2] == 0)
+                                            isOpen = true;
+                                        Map[position.X - distance / 2 + 1, position.Y + distance / 2] = 4;
+                                    }
+                                    else
+                                    {
+                                        if (Map[position.X + distance / 2 - 1, position.Y + distance / 2] == 0)
+                                            isOpen = true;
+                                        Map[position.X - distance / 2 - 1, position.Y + distance / 2] = 4;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string olaf = ex.ToString();
                 }
                 yield return $"{note}{(isOpen ? "H" : "Q")}";
             }
@@ -246,6 +253,32 @@ namespace CodinGame.VeryHard.Music_Scores
                     Console.Write(this.Map[i, j]);
                 Console.WriteLine(string.Empty);
             }
+        }
+        public void PrintHalf()
+        {
+            for (int i = 0; i < Height; i++)
+            {
+                for (int j = 0; j < Width / 2; j++)
+                    Console.Write(this.Map[i, j]);
+                Console.WriteLine(string.Empty);
+            }
+        }
+        public void PrintOneQuarter()
+        {
+            for (int i = 0; i < Height; i++)
+            {
+                for (int j = 0; j < Width / 4; j++)
+                    Console.Write(this.Map[i, j]);
+                Console.WriteLine(string.Empty);
+            }
+        }
+        public void Save()
+        {
+            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(this.Width, this.Height);
+            for (int i = 0; i < Height; i++)
+                for (int j = 0; j < Width; j++)
+                    bitmap.SetPixel(j, i, this.Map[i, j] == 0 ? System.Drawing.Color.Black : System.Drawing.Color.White);
+            bitmap.Save(@"C:\Users\aless\Downloads\singasong.jpg");
         }
     }
 }
