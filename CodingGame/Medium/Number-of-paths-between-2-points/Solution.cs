@@ -36,7 +36,7 @@ namespace CodinGame.Medium.Number_of_paths_between_2_points
         {
             if (x == M - 1 && y == N - 1)
                 Paths += 1;
-            //left
+            //down
             if (IsVisitable(x + 1, y))
             {
                 Check(x + 1, y);
